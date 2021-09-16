@@ -26,6 +26,7 @@ function SnakeView:new()
 		y = 0
 	}
 	self.score = 0
+	self.highscore = 0
 	self.snake = {}
 	self.apple_pos = {}
 	self.direction = "LEFT"
@@ -34,7 +35,8 @@ end
 
 function SnakeView:init()
 	self.initted = true
-	self.direction = "LEFT"p
+	self.direction = "LEFT"
+	self.highscore = self.score
 	self.score = 0
 	self:randomize_apple()
 	self:build_snake()
@@ -99,8 +101,11 @@ function SnakeView:move_snake()
 		new_snake[1].y = new_snake[1].y + 1
 	end
 
+	if config.snake_wall_die and (new_snake[1].y > self.game_size.y or new_snake[1].y < 0 or new_snake[1].x > self.game_size.x or new_snake[1].x < 0) then
+		-- reset game
+		self.initted = false
 	-- wrap snake
-	if not config.snake_wall_die then
+	else
 		if new_snake[1].x < 0 then
 			new_snake[1].x = self.game_size.x
 		end
@@ -116,9 +121,6 @@ function SnakeView:move_snake()
 		if new_snake[1].y > self.game_size.y then
 			new_snake[1].y = 0
 		end
-	elseif new_snake[1].y > self.game_size.y or new_snake[1].y < 0 or new_snake[1].x > self.game_size.x or new_snake[1].x < 0 then
-		-- reset game
-		self.initted = false
 	end
 
 
@@ -183,7 +185,7 @@ function SnakeView:draw()
 	end
 
 	-- display score
-	local score = string.format("%d", self.score)
+	local score = string.format("%d	%d", self.score, self.highscore)
 	renderer.draw_text(style.big_font, score, x + 5, y, style.dim)
 end
 
