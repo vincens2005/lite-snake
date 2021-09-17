@@ -2,6 +2,8 @@
 
 This is a snake game that runs inside of lite or lite-xl
 
+run it by running `Snake: Open`
+
 config options:
 
 ```lua
