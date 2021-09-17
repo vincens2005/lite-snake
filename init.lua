@@ -13,6 +13,8 @@ style.apple_color = {common.color "#ff0000"}
 config.snake_size = 20 * SCALE
 config.snake_length = 8
 config.snake_wall_die = false
+
+-- how many frames to skip before a game loop
 config.snake_fps_fac = 5
 
 local SnakeView = View:extend()
@@ -104,8 +106,8 @@ function SnakeView:move_snake()
 	if config.snake_wall_die and (new_snake[1].y > self.game_size.y or new_snake[1].y < 0 or new_snake[1].x > self.game_size.x or new_snake[1].x < 0) then
 		-- reset game
 		self.initted = false
-	-- wrap snake
 	else
+	-- wrap snake
 		if new_snake[1].x < 0 then
 			new_snake[1].x = self.game_size.x
 		end
@@ -160,6 +162,9 @@ function SnakeView:update(...)
 
 	if self.snake[1].x == self.apple_pos.x and self.snake[1].y == self.apple_pos.y then
 			self.score = self.score + 1
+			if self.score > self.highscore then
+				self.highscore = self.score
+			end
 			self:randomize_apple()
 			self:lengthen_snake()
 	end
