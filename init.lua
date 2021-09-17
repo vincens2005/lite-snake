@@ -38,7 +38,9 @@ end
 function SnakeView:init()
 	self.initted = true
 	self.direction = "LEFT"
-	self.highscore = self.score
+	if self.score > self.highscore then
+		self.highscore = self.score
+	end
 	self.score = 0
 	self:randomize_apple()
 	self:build_snake()
@@ -61,7 +63,7 @@ end
 function SnakeView:randomize_apple()
 	math.randomseed(os.time())
 	local random1 = math.random()
-	math.randomseed(random1 * os.time())
+	math.randomseed(os.time() + 12)
 	local random2 = math.random()
 
 	self.apple_pos = {
